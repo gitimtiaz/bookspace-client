@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand palette */
+  --color-ink: #123524;
+  --color-forest: #3E7B27;
+  --color-moss: #85A947;
+  --color-parchment: #EFE3C2;
+
+  /* Fonts — reference the CSS vars set by Next.js next/font on <html> */
+  --font-display: var(--bs-font-display);
+  --font-sans: var(--bs-font-sans);
+}
+
+@layer base {
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+  }
+
+  ::selection {
+    background-color: color-mix(in srgb, var(--color-moss) 30%, transparent);
+    color: var(--color-ink);
+  }
+}
