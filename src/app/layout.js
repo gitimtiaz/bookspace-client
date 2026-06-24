@@ -1,6 +1,7 @@
 import "./globals.css";
 import { fontDisplay, fontSans } from "./fonts";
 import Navbar from "@/components/shared/Navbar";
+import ToastProvider from "@/components/providers/ToastProvider";
 
 export const metadata = {
   title: "BookSpace",
@@ -19,8 +20,9 @@ export default function RootLayout({ children }) {
     >
       <body className="flex min-h-screen flex-col bg-parchment text-ink font-sans antialiased">
         <Navbar />
-
         <main className="flex-1">{children}</main>
+        <ToastProvider />
+        
       </body>
     </html>
   );
