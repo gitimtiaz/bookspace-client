@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import Logo from "@/components/ui/Logo";
 import Button from "@/components/ui/Button";
@@ -9,15 +9,17 @@ import ThemeToggle from "@/components/ui/ThemeToggle";
 import NavSearch from "@/components/layout/NavSearch";
 import UserMenu from "@/components/layout/UserMenu";
 import { NAV_LINKS, USER_MENU_ITEMS } from "@/lib/navigation";
+import { useAuth } from "@/lib/authContext";
 import { cn } from "@/lib/cn";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, logout } = useAuth();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-
-  const isLoggedIn = false;
 
   useEffect(() => {
     function handleScroll() {
@@ -27,10 +29,16 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  async function handleLogout() {
+    await logout();
+    setIsMenuOpen(false);
+    router.push("/");
+  }
+
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 bg-parchment/95 backdrop-blur transition-shadow dark:bg-ink/95",
+        "sticky top-0 z-40 bg-parchment/95 backdrop-blur transition-shadow dark:bg-ink/95 border-b-green-600 dark:border-b-[#efe3c2]",
         isScrolled
           ? "border-b border-ink/10 shadow-sm dark:border-parchment/10"
           : "border-b border-transparent"
@@ -80,8 +88,8 @@ export default function Navbar() {
 
           <ThemeToggle />
 
-          {isLoggedIn ? (
-            <UserMenu userName="Reader" />
+          {user ? (
+            <UserMenu userName={user.name} onLogout={handleLogout} />
           ) : (
             <Button href="/login" size="sm" className="ml-2">
               Login
@@ -147,8 +155,8 @@ export default function Navbar() {
 
           <div className="mt-3 flex items-center gap-3">
             <ThemeToggle />
-            {isLoggedIn ? (
-              <div className="flex flex-col gap-1 rounded-lg border border-ink/10 p-2 dark:border-parchment/10">
+            {user ? (
+              <div className="flex flex-1 flex-col gap-1 rounded-lg border border-ink/10 p-2 dark:border-parchment/10">
                 {USER_MENU_ITEMS.map((item) => (
                   <Link
                     key={item.href}
@@ -159,6 +167,13 @@ export default function Navbar() {
                     {item.label}
                   </Link>
                 ))}
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="rounded-lg px-3 py-2 text-left text-sm text-ink/80 hover:bg-ink/5 dark:text-parchment/80"
+                >
+                  Logout
+                </button>
               </div>
             ) : (
               <Button href="/login" size="sm" className="flex-1">
