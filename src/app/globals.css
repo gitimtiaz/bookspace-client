@@ -1,13 +1,12 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  /* Brand palette */
   --color-ink: #123524;
   --color-forest: #3E7B27;
   --color-moss: #85A947;
   --color-parchment: #EFE3C2;
-
-  /* Fonts — reference the CSS vars set by Next.js next/font on <html> */
   --font-display: var(--bs-font-display);
   --font-sans: var(--bs-font-sans);
 }

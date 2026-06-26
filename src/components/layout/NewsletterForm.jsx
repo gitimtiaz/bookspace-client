@@ -9,8 +9,6 @@ export default function NewsletterForm() {
   function handleSubmit(event) {
     event.preventDefault();
     if (!email.trim()) return;
-
-    // Frontend-only placeholder for now - no backend endpoint yet.
     toast.success("You're on the list! We'll send ebook picks your way.");
     setEmail("");
   }
@@ -21,7 +19,7 @@ export default function NewsletterForm() {
         type="email"
         required
         value={email}
-        onChange={(event) => setEmail(event.target.value)}
+        onChange={(e) => setEmail(e.target.value)}
         placeholder="you@example.com"
         className="w-full rounded-lg border border-parchment/20 bg-parchment/5 px-3 py-2 text-sm text-parchment placeholder:text-parchment/40 focus:border-moss focus:outline-none focus:ring-1 focus:ring-moss"
       />
