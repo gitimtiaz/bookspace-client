@@ -8,7 +8,7 @@ export default function Home() {
       <HeroSlider />
       <FeaturedEbooks />
       <TopWriters />
-      {/* Genre grid, Why Choose BookSpace */}
+      {/* Genre grid, Why Choose BookSpace, Community Stats */}
     </>
   );
 }
