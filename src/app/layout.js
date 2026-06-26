@@ -1,6 +1,6 @@
 import "./globals.css";
 import { fontDisplay, fontSans } from "./fonts";
-import Navbar from "@/components/shared/Navbar";
+import Navbar from "@/components/layout/Navbar";
 import ToastProvider from "@/components/providers/ToastProvider";
 
 export const metadata = {
