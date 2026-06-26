@@ -1,8 +1,19 @@
-<svg
+<!-- <svg
   xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 24 24"
   fill="#3E7B27"
 >
   <path d="M3 5.5C3 5.5 5.5 4 9 4.5C10.5 4.7 12 5.3 12 5.3V19C12 19 10.5 18.2 9 18C5.5 17.5 3 19 3 19V5.5Z"/>
   <path d="M21 5.5C21 5.5 18.5 4 15 4.5C13.5 4.7 12 5.3 12 5.3V19C12 19 13.5 18.2 15 18C18.5 17.5 21 19 21 19V5.5Z"/>
+</svg> -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <rect width="32" height="32" rx="6" fill="#3E7B27"/>
+  <!-- Left page -->
+  <path d="M16 8 C16 8 10 7.5 7 9 L7 24 C10 22.5 16 23 16 23Z" fill="#EFE3C2" opacity="0.9"/>
+  <!-- Right page -->
+  <path d="M16 8 C16 8 22 7.5 25 9 L25 24 C22 22.5 16 23 16 23Z" fill="#EFE3C2" opacity="0.75"/>
+  <!-- Spine -->
+  <line x1="16" y1="8" x2="16" y2="23" stroke="#85A947" stroke-width="1.2"/>
+  <!-- Bookmark -->
+  <path d="M22 7 L22 13 L24.5 11.5 L27 13 L27 7Z" fill="#85A947"/>
 </svg>
