@@ -1,29 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Logo from "@/components/ui/Logo";
 import Button from "@/components/ui/Button";
+import NavSearch from "@/components/layout/NavSearch";
+import UserMenu from "@/components/layout/UserMenu";
+import { NAV_LINKS, USER_MENU_ITEMS } from "@/lib/navigation";
 import { cn } from "@/lib/cn";
-
-// Commit 5 will move these into lib/navigation.js and add NavSearch + UserMenu
-const NAV_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/browse", label: "Browse Ebooks" },
-  { href: "/dashboard", label: "Dashboard" },
-];
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  // Commit 10 will replace this with real useAuth() session check
   const isLoggedIn = false;
 
+  useEffect(() => {
+    function handleScroll() {
+      setIsScrolled(window.scrollY > 8);
+    }
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="border-b border-ink/10 bg-parchment">
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+    <header
+      className={cn(
+        "sticky top-0 z-40 bg-parchment/95 backdrop-blur transition-shadow",
+        isScrolled
+          ? "border-b border-ink/10 shadow-sm"
+          : "border-b border-transparent"
+      )}
+    >
+      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <Logo />
 
         {/* Desktop links */}
@@ -45,12 +57,31 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* Desktop auth button */}
-        <div className="hidden md:block">
+        {/* Desktop right side */}
+        <div className="hidden items-center gap-3 md:flex">
+          {/* Search toggle */}
+          <button
+            type="button"
+            onClick={() => setIsSearchOpen((open) => !open)}
+            className="flex h-9 w-9 items-center justify-center rounded-lg text-ink/70 hover:bg-ink/5 hover:text-ink"
+            aria-label="Toggle search"
+            aria-expanded={isSearchOpen}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              className="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="M21 21l-4.3-4.3" />
+            </svg>
+          </button>
+
           {isLoggedIn ? (
-            <Button variant="outline" size="sm">
-              Logout
-            </Button>
+            <UserMenu userName="Reader" />
           ) : (
             <Button href="/login" size="sm">
               Login
@@ -83,10 +114,21 @@ export default function Navbar() {
         </button>
       </nav>
 
+      {/* Desktop search bar */}
+      {isSearchOpen && (
+        <div className="hidden border-t border-ink/10 px-4 py-3 sm:px-6 md:block">
+          <NavSearch className="mx-auto max-w-md" />
+        </div>
+      )}
+
       {/* Mobile menu */}
       {isMenuOpen && (
         <div className="border-t border-ink/10 px-4 pb-4 md:hidden">
-          <div className="flex flex-col gap-1 pt-2">
+          <div className="pt-3">
+            <NavSearch />
+          </div>
+
+          <div className="flex flex-col gap-1 pt-3">
             {NAV_LINKS.map((link) => {
               const isActive = pathname === link.href;
               return (
@@ -106,11 +148,21 @@ export default function Navbar() {
               );
             })}
           </div>
+
           <div className="mt-3">
             {isLoggedIn ? (
-              <Button variant="outline" size="sm" className="w-full">
-                Logout
-              </Button>
+              <div className="flex flex-col gap-1 rounded-lg border border-ink/10 p-2">
+                {USER_MENU_ITEMS.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="rounded-lg px-3 py-2 text-sm text-ink/80 hover:bg-ink/5"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
             ) : (
               <Button href="/login" size="sm" className="w-full">
                 Login
