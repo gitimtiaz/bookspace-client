@@ -38,7 +38,7 @@ export default function Navbar() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 bg-parchment/95 backdrop-blur transition-shadow dark:bg-ink/95 border-b-green-600 dark:border-b-[#efe3c2]",
+        "sticky top-0 z-40 bg-parchment/95 backdrop-blur transition-shadow dark:bg-ink/95",
         isScrolled
           ? "border-b border-ink/10 shadow-sm dark:border-parchment/10"
           : "border-b border-transparent"
