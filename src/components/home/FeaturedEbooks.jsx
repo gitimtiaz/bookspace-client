@@ -3,7 +3,7 @@ import EbookCard from "@/components/ui/EbookCard";
 import { DUMMY_EBOOKS } from "@/lib/dummyData";
 
 export default function FeaturedEbooks() {
-  // TODO: replace with fetch("/api/ebooks?featured=true&limit=6") when backend is ready
+
   const ebooks = DUMMY_EBOOKS.slice(0, 6);
 
   return (

@@ -30,7 +30,7 @@ function WriterAvatar({ name, avatarUrl }) {
 }
 
 export default function TopWriters() {
-  // TODO: replace with fetch("/api/writers/top") when backend is ready
+  
   const writers = DUMMY_TOP_WRITERS;
 
   return (
