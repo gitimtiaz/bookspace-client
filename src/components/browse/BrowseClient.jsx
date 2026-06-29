@@ -50,7 +50,6 @@ export default function BrowseClient({ ebooks }) {
   const [sortBy, setSortBy] = useState("newest");
   const [page, setPage] = useState(1);
 
-  // Sync URL params when they change (NavSearch / GenreGrid links)
   useEffect(() => {
     setSearch(searchParams.get("search") || "");
     setGenre(searchParams.get("genre") || "all");

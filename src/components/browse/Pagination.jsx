@@ -1,54 +1,88 @@
-export default function Pagination({
-  currentPage,
-  totalPages,
-  onPageChange,
-}) {
-  // Don't render if only one page
+import { cn } from "@/lib/cn";
+
+function getPageNumbers(current, total) {
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+  if (current <= 4) {
+    return [1, 2, 3, 4, 5, "...", total];
+  }
+  if (current >= total - 3) {
+    return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
+  }
+  return [1, "...", current - 1, current, current + 1, "...", total];
+}
+
+const BTN_BASE =
+  "flex h-9 min-w-[2.25rem] items-center justify-center rounded-lg border px-2 text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-40";
+
+const BTN_DEFAULT =
+  "border-ink/15 text-ink/70 hover:border-ink/40 hover:text-ink dark:border-parchment/15 dark:text-parchment/70 dark:hover:border-parchment/40 dark:hover:text-parchment";
+
+const BTN_ACTIVE =
+  "border-forest bg-forest text-parchment dark:border-moss dark:bg-moss dark:text-ink";
+
+export default function Pagination({ currentPage, totalPages, onPageChange }) {
   if (totalPages <= 1) return null;
 
-  // Generate page numbers
-  const pages = Array.from(
-    { length: totalPages },
-    (_, i) => i + 1
-  );
+  const pages = getPageNumbers(currentPage, totalPages);
 
   return (
-    <div className="mt-8 flex items-center justify-center gap-2">
-      {/* Previous */}
+    <nav
+      className="mt-10 flex items-center justify-center gap-1"
+      aria-label="Pagination"
+    >
+      {/* Prev */}
       <button
         type="button"
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="rounded-lg border border-ink/15 px-3 py-2 text-sm text-ink transition-colors hover:border-forest hover:text-forest disabled:cursor-not-allowed disabled:opacity-50 dark:border-parchment/15 dark:text-parchment dark:hover:border-moss dark:hover:text-moss"
+        className={cn(BTN_BASE, BTN_DEFAULT)}
+        aria-label="Previous page"
       >
-        Previous
+        <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
       </button>
 
       {/* Page numbers */}
-      {pages.map((page) => (
-        <button
-          key={page}
-          type="button"
-          onClick={() => onPageChange(page)}
-          className={`h-10 min-w-10 rounded-lg border text-sm font-medium transition-colors ${
-            currentPage === page
-              ? "border-forest bg-forest text-parchment dark:border-moss dark:bg-moss dark:text-ink"
-              : "border-ink/15 text-ink hover:border-forest hover:text-forest dark:border-parchment/15 dark:text-parchment dark:hover:border-moss dark:hover:text-moss"
-          }`}
-        >
-          {page}
-        </button>
-      ))}
+      {pages.map((page, idx) =>
+        page === "..." ? (
+          <span
+            key={`ellipsis-${idx}`}
+            className="flex h-9 w-9 items-center justify-center text-sm text-ink/40 dark:text-parchment/40"
+          >
+            …
+          </span>
+        ) : (
+          <button
+            key={page}
+            type="button"
+            onClick={() => onPageChange(page)}
+            className={cn(
+              BTN_BASE,
+              page === currentPage ? BTN_ACTIVE : BTN_DEFAULT
+            )}
+            aria-label={`Page ${page}`}
+            aria-current={page === currentPage ? "page" : undefined}
+          >
+            {page}
+          </button>
+        )
+      )}
 
       {/* Next */}
       <button
         type="button"
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="rounded-lg border border-ink/15 px-3 py-2 text-sm text-ink transition-colors hover:border-forest hover:text-forest disabled:cursor-not-allowed disabled:opacity-50 dark:border-parchment/15 dark:text-parchment dark:hover:border-moss dark:hover:text-moss"
+        className={cn(BTN_BASE, BTN_DEFAULT)}
+        aria-label="Next page"
       >
-        Next
+        <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+          <path d="M9 18l6-6-6-6" />
+        </svg>
       </button>
-    </div>
+    </nav>
   );
 }
