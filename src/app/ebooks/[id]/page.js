@@ -7,6 +7,7 @@ import StatsCard from "@/components/dashboard/StatsCard";
 import EbookCard from "@/components/ui/EbookCard";
 import { DUMMY_EBOOKS } from "@/lib/dummyData";
 
+// TODO: replace all dummy data below with real API calls when backend is ready
 const DUMMY_PURCHASES = [
   { _id: "p1", ebookId: "ebook_01", title: "Reborn in the Iron Citadel", writer: "Kaito Maren", date: "2026-05-15", price: 4.99 },
   { _id: "p2", ebookId: "ebook_03", title: "The Hollow Crown Prophecy", writer: "Amir Noel", date: "2026-06-03", price: 5.99 },
